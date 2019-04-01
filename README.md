@@ -79,7 +79,7 @@
 ## 테이블 설계
 - [Table DDL](/ddl.sql)
 - `points` : 사용자 id와 해당유저의 현재 포인트를 가짐
-- `events` : 들어오는 `request`의 결과를 저장
+- `events` : `/evnts`의 결과를 저장
 - `review` : 리뷰id를 키로 가지고 있으며 해당 리뷰의 현재 상태를 정규화 해놓은 테이블
 - `place` : 첫리뷰 조건을 구현하기위해 특정 place를 미리 지정해놓은 테이블
 - `point_history` : `points`와 `events`를 다대일 관계로 연관되어있음.
