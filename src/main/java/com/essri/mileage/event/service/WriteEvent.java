@@ -52,6 +52,4 @@ public class WriteEvent {
                 .point(mileage)
                 .build();
     }
-
-
 }
