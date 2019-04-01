@@ -45,6 +45,7 @@ public class Review {
     this.content = content;
     this.photos = photos;
   }
+
 }
 
 

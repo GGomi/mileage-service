@@ -11,6 +11,7 @@ import java.util.List;
 
 @Getter
 public class GetPointResponse {
+
     private String userId;
     private long point;
     private List<EventActionResponse> histories;
@@ -22,6 +23,7 @@ public class GetPointResponse {
     }
 
     public List<EventActionResponse> buildHistory(List<History> histories) {
+
         List<EventActionResponse> returns = new ArrayList<>();
 
         for (History history : histories) {

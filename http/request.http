@@ -22,6 +22,38 @@ Content-Type: application/json
 }
 
 ###
+
+POST http://localhost:8890/events
+Content-Type: application/json
+
+{
+  "type": "REVIEW",
+  "action": "MOD",
+  "reviewId": "240a0658-dc5f-4878-9381-ebb7b2667772",
+  "content": "좋아요!",
+  "attachedPhotoIds": [
+  ],
+  "userId": "3ede0ef2-92b7-4817-a5f3-0c575361f745",
+  "placeId": "2e4baf1c-5acb-4efb-a1af-eddada31b00f"
+}
+
+###
+
+POST http://localhost:8890/events
+Content-Type: application/json
+
+{
+  "type": "REVIEW",
+  "action": "DELETE",
+  "reviewId": "240a0658-dc5f-4878-9381-ebb7b2667772",
+  "content": "좋아요!",
+  "attachedPhotoIds": [
+  ],
+  "userId": "3ede0ef2-92b7-4817-a5f3-0c575361f745",
+  "placeId": "2e4baf1c-5acb-4efb-a1af-eddada31b00f"
+}
+
+###
 GET http://localhost:8890/point/3ede0ef2-92b7-4817-a5f3-0c575361f745
 Content-Type: application/json
 ###

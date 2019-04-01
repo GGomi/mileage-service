@@ -11,15 +11,20 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @RequiredArgsConstructor
 public class EventModService implements EventActionService {
-    private final WriteEvent writeEvent;
+
+    private final EventService eventService;
     private final ReviewSave reviewSave;
 
     @Override
     public Event handleAction(EventActionRequest dto) {
         if (reviewSave.hasReview(dto.getReviewId())) {
-            Event event = writeEvent.write(dto);
+
+            Event event = eventService.writeEvent(dto);
+
             reviewSave.save(dto);
+
             return event;
+
         } else {
             throw new IllegalArgumentException(
                     String.format("Unknown reviewId : %s", dto.getReviewId()));

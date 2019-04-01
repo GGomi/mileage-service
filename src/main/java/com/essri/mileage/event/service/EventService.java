@@ -14,15 +14,14 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class WriteEvent {
+public class EventService {
     private final IncreasePoint increasePoint;
     private final CalculatePoint calculatePoint;
     private final EventRepository eventRepository;
-    private long mileage = 0;
 
-    public Event write(EventActionRequest dto) {
-        mileage = calculatePoint.calculate(dto);
-        Event event = eventBuilder(dto, mileage);
+    public Event writeEvent(EventActionRequest dto) {
+
+        Event event = eventBuilder(dto, calculatePoint.calculate(dto));
         Points point = savePoint(event);
 
         History history = History.builder()
@@ -34,6 +33,7 @@ public class WriteEvent {
         point.addHistory(history);
 
         return eventRepository.save(event);
+
     }
 
     public Points savePoint(Event event) {

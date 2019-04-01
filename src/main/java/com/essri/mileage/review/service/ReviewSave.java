@@ -28,8 +28,4 @@ public class ReviewSave {
             return false;
         }
     }
-
-    public void delete(String reviewId) {
-        reviewRepository.deleteById(reviewId);
-    }
 }
