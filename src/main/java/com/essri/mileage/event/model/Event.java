@@ -2,10 +2,7 @@ package com.essri.mileage.event.model;
 
 
 import com.essri.mileage.history.History;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
