@@ -27,9 +27,13 @@ public class EventActionResponse {
     @NotBlank
     private String placeId;
 
+    @NotBlank
+    private long point;
+
     public EventActionResponse(Event event) {
         this.eventId = event.getReviewId();
         this.type = event.getType();
+        this.point = event.getPoint();
         this.action = event.getAction();
         this.content = event.getContent();
         this.attachedPhotos = event.getPhotos();
