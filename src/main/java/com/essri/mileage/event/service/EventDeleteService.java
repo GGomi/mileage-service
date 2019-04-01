@@ -10,13 +10,13 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class EventDeleteService implements EventActionService{
+public class EventDeleteService implements EventActionService {
     private final WriteEvent writeEvent;
     private final ReviewSave reviewSave;
 
     @Override
     public Event handleAction(EventActionRequest dto) {
-        if(reviewSave.hasReview(dto.getReviewId())) {
+        if (reviewSave.hasReview(dto.getReviewId())) {
             reviewSave.delete(dto.getReviewId());
             return writeEvent.write(dto);
         } else {

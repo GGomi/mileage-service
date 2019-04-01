@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class EventAddService implements EventActionService {
     private final WriteEvent writeEvent;
     private final ReviewSave reviewSave;
+
     @Override
     public Event handleAction(EventActionRequest dto) {
         Event event = writeEvent.write(dto);
