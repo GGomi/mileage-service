@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @Table(name = "point_history")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class History {
+public class PointHistory {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,7 +41,7 @@ public class History {
   private Points points;
 
   @Builder
-  public History(Event event, Points point) {
+  public PointHistory(Event event, Points point) {
     this.events = event;
     this.points = point;
   }

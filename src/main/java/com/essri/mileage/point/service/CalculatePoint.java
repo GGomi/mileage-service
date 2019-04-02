@@ -2,8 +2,6 @@ package com.essri.mileage.point.service;
 
 import com.essri.mileage.event.dto.EventActionRequest;
 import com.essri.mileage.event.model.ActionType;
-import com.essri.mileage.place.Place;
-import com.essri.mileage.place.service.PlaceService;
 import com.essri.mileage.review.Review;
 import com.essri.mileage.review.ReviewRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,61 +14,74 @@ import java.util.List;
 @Transactional
 @RequiredArgsConstructor
 public class CalculatePoint {
-    private final PlaceService placeService;
-    private final ReviewRepository repository;
+    private final ReviewRepository reviewRepository;
 
-    public long calculate(EventActionRequest dto) {
+    public long contentCalculate(EventActionRequest dto) {
+        long mileage;
 
-        Review review = repository.findById(dto.getReviewId())
-                .orElse(Review.builder().content(0).photos(0).build());
+        Review review = reviewRepository.findById(dto.getReviewId())
+                                        .orElse(Review.builder()
+                                                        .content(0)
+                                                        .photos(0)
+                                                        .build());
 
-        String placeId = dto.getPlaceId();
-        ActionType action = dto.getAction();
-        Place place = placeService.isPlace(placeId);
-        List<String> photos = dto.getAttachedPhotoIds();
-        String content = dto.getContent();
-
-        long point = 0;
-
-        if (place != null) {
-            if (action.equals(ActionType.DELETE) && place.getValue() != null) {
-
-                if (place.getValue().equals(dto.getReviewId())) {
-                    placeService.addFirstReview(placeId, null);
-                    point += 1;
-                }
-
-                if (hasContent(dto.getContent())) point += 1;
-                if (hasPhotos(dto.getAttachedPhotoIds())) point += 1;
-
-                return point * -1;
-
-            } else if (place.getValue() == null) {
-
-                placeService.addFirstReview(placeId, dto.getReviewId());
-                point += 1;
-
-            }
+        if(dto.getAction().equals(ActionType.DELETE)) {
+            return deleteAction(review);
         }
 
-        if (review.getContent() == 0 && hasContent(content)) point += 1;
-        else {
-            if (!hasContent(content)) point -= 1;
+        if(review.getContent() == 0 && review.getPhotos() == 0) {
+            mileage = hasPhotos(dto.getAttachedPhotoIds())
+                            + hasContent(dto.getContent());
+        } else {
+            mileage = getMileage(dto, review);
         }
 
-        if (review.getPhotos() == 0 && hasPhotos(photos)) point += 1;
-        else {
-            if (!hasPhotos(photos)) point -= 1;
-        }
-
-        return point;
+        return mileage;
     }
 
-    private boolean hasPhotos(List<String> list) {
-        return list.size() > 0;
+    private long getMileage(EventActionRequest dto, Review review) {
+
+        long mileage = 0;
+
+        if(hasContent(dto.getContent()) == 1 && !hasContent(review.getContent())) {
+            mileage += 1;
+        }
+        if(hasContent(dto.getContent()) != 1 && hasContent(review.getContent())) {
+            mileage -= 1;
+        }
+        if(hasPhotos(dto.getAttachedPhotoIds()) == 1 && !hasPhotos(review.getPhotos())) {
+            mileage += 1;
+        }
+        if(hasPhotos(dto.getAttachedPhotoIds()) != 1 && hasPhotos(review.getPhotos())) {
+            mileage -= 1;
+        }
+
+        return mileage;
+
     }
 
-    private boolean hasContent(String content) {
-        return content.length() > 0;
+    private long deleteAction(Review review) {
+        long mileage = 0;
+
+        if(hasContent(review.getContent())) mileage += 1;
+        if(hasPhotos(review.getPhotos())) mileage += 1;
+
+        return mileage*-1;
+    }
+
+    private int hasPhotos(List<String> list) {
+        return list.size() > 0 ? 1 : 0;
+    }
+
+    private boolean hasContent(int content) {
+        return content > 0;
+    }
+
+    private boolean hasPhotos(int photosSize) {
+        return photosSize > 0;
+    }
+
+    private int hasContent(String content) {
+        return content.length() > 0 ? 1 : 0;
     }
 }

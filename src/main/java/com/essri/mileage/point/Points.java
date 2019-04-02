@@ -1,6 +1,6 @@
 package com.essri.mileage.point;
 
-import com.essri.mileage.history.History;
+import com.essri.mileage.history.PointHistory;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -35,7 +35,7 @@ public class Points {
   private LocalDateTime updateAt;
 
   @OneToMany(mappedBy = "points")
-  private List<History> histories = new ArrayList<>();
+  private List<PointHistory> histories = new ArrayList<>();
 
   @Builder
   public Points(String id, long point) {
@@ -43,7 +43,9 @@ public class Points {
     this.point = point;
   }
 
-  public void addHistory(History history) {
-    getHistories().add(history);
+  public void addHistory(PointHistory pointHistory) {
+    getHistories().add(pointHistory);
   }
+
+
 }

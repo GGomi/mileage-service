@@ -2,7 +2,7 @@ package com.essri.mileage.point.dto;
 
 import com.essri.mileage.event.dto.EventActionResponse;
 import com.essri.mileage.event.model.Event;
-import com.essri.mileage.history.History;
+import com.essri.mileage.history.PointHistory;
 import com.essri.mileage.point.Points;
 import lombok.Getter;
 
@@ -22,12 +22,12 @@ public class GetPointResponse {
         this.histories = buildHistory(point.getHistories());
     }
 
-    public List<EventActionResponse> buildHistory(List<History> histories) {
+    public List<EventActionResponse> buildHistory(List<PointHistory> histories) {
 
         List<EventActionResponse> returns = new ArrayList<>();
 
-        for (History history : histories) {
-            Event event = history.getEvents();
+        for (PointHistory pointHistory : histories) {
+            Event event = pointHistory.getEvents();
             returns.add(new EventActionResponse(event));
         }
 

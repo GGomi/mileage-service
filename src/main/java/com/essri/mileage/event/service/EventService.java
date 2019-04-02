@@ -3,10 +3,13 @@ package com.essri.mileage.event.service;
 import com.essri.mileage.event.EventRepository;
 import com.essri.mileage.event.dto.EventActionRequest;
 import com.essri.mileage.event.model.Event;
-import com.essri.mileage.history.History;
+import com.essri.mileage.history.PointHistory;
+import com.essri.mileage.place.SpecialPlace;
+import com.essri.mileage.place.service.PlaceService;
 import com.essri.mileage.point.Points;
 import com.essri.mileage.point.service.CalculatePoint;
 import com.essri.mileage.point.service.IncreasePoint;
+import com.essri.mileage.review.service.ReviewSave;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,28 +19,23 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class EventService {
     private final IncreasePoint increasePoint;
-    private final CalculatePoint calculatePoint;
     private final EventRepository eventRepository;
 
-    public Event writeEvent(EventActionRequest dto) {
+    public Event writeEvent(EventActionRequest dto, long mileage) {
 
-        Event event = eventBuilder(dto, calculatePoint.calculate(dto));
-        Points point = savePoint(event);
+        Event event = eventBuilder(dto, mileage);
+        Points point = increasePoint.save(dto.getUserId(), mileage);
 
-        History history = History.builder()
+        PointHistory pointHistory = PointHistory.builder()
                 .event(event)
                 .point(point)
                 .build();
 
-        event.addHistory(history);
-        point.addHistory(history);
+        event.addHistory(pointHistory);
+        point.addHistory(pointHistory);
 
         return eventRepository.save(event);
 
-    }
-
-    public Points savePoint(Event event) {
-        return increasePoint.save(event);
     }
 
     private Event eventBuilder(EventActionRequest dto, long mileage) {
@@ -51,5 +49,11 @@ public class EventService {
                 .type(dto.getType())
                 .point(mileage)
                 .build();
+    }
+
+    public void checkLegal(EventActionRequest dto) {
+        if(dto.getAttachedPhotoIds().size() == 0 && dto.getContent().length() == 0)
+            throw new IllegalArgumentException(
+                    String.format("It's empty review content : %s", dto.getReviewId()));
     }
 }

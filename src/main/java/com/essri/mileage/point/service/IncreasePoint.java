@@ -1,8 +1,7 @@
 package com.essri.mileage.point.service;
 
-import com.essri.mileage.event.model.Event;
-import com.essri.mileage.point.Points;
 import com.essri.mileage.point.PointRepository;
+import com.essri.mileage.point.Points;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,16 +12,17 @@ import org.springframework.transaction.annotation.Transactional;
 public class IncreasePoint {
     private final PointRepository repository;
 
-    public Points save(Event event) {
+    public Points save(String userId, long mileage) {
         Points point = Points.builder()
-                .id(event.getUserId())
-                .point(event.getPoint() + getPoint(event.getUserId()))
+                .id(userId)
+                .point(mileage + getMileage(userId))
                 .build();
 
         return repository.save(point);
     }
 
-    public long getPoint(String userId) {
+    private long getMileage(String userId) {
         return repository.findById(userId).orElse(new Points(userId,0)).getPoint();
     }
+
 }

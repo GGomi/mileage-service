@@ -1,7 +1,7 @@
 package com.essri.mileage.event.model;
 
 
-import com.essri.mileage.history.History;
+import com.essri.mileage.history.PointHistory;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -56,7 +56,7 @@ public class Event {
     private LocalDateTime updateAt;
 
     @OneToMany(mappedBy = "events", cascade = CascadeType.ALL)
-    private List<History> histories = new ArrayList<>();
+    private List<PointHistory> histories = new ArrayList<>();
 
     @Builder
     public Event(String userId, String reviewId, String content, ActionType action, ReviewType type, long point, String photos, String placeId) {
@@ -70,7 +70,7 @@ public class Event {
         this.placeId = placeId;
     }
 
-    public void addHistory(History history) {
-        getHistories().add(history);
+    public void addHistory(PointHistory pointHistory) {
+        getHistories().add(pointHistory);
     }
 }
