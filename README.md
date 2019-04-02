@@ -78,11 +78,42 @@
 - 포인트 적립
 ```text
 begin
+point = 0
+CASE action OF
+    ADD : 
+    MOD : 
+        IF REVIEW has reviewId
+            IF specialplace has placeId
+                IF specialplace value is null
+                    set point add to 1;
+            IF newReview has content AND oldReview no content
+                set point add to 1
+            IF newReview has photos AND oldReview no photos
+                set point add to 1
+            IF newReview no content AND oldReview has content
+                set point subtraction to 1
+            IF newReview no photos AND oldReview has photos
+                set point subtraction to 1
+    DELETE :
+        IF REVIEW has reviewId
+            IF specialplace has placeId
+                IF specialplace value is reviewId
+                    set point subtraction to 1;
+            IF content is bigger then 0
+                set point subtraction to 1;
+            IF attachedPhoto.size is bigger then 0
+                set point subtraction to 1;
+ENDCASE
 
+return point
 end
 ```
 - 포인트 조회
 ```text
+BEGIN
+print get point in TABLE Points by userId
+print event in point_history
+END
 
 ```
 
@@ -109,7 +140,7 @@ GET|/point/{user_id}|사용자 포인트, 포인트증감이벤트 확인
 ## 문제해결
 - 같은 도메인의 `request`에서 action (ADD,MOD,DELETE) 세가지로 나누어 로직을 처리해야해서 팩토리 메소드 패턴을 적용하여 추상화단계를 높임
 - `events` 테이블과 `points` 테이블이 `point_history` 테이블과 일대다 관계를 맺어 해당 `event_id`가 어느 유저의 포인트를 얼마나 적립, 차감을 했는지 알 수 있음.
-- 
+
 ## 시나리오
 1. 사용자는 `userId`로 `point`와 증감내역을 알 수 있다. (GET - /point/{id})
    - ![getResult](doc/getResult.png) 
