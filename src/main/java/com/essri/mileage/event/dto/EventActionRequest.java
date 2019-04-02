@@ -1,7 +1,7 @@
 package com.essri.mileage.event.dto;
 
-import com.essri.mileage.event.model.ActionType;
-import com.essri.mileage.event.model.ReviewType;
+import com.essri.mileage.event.domain.ActionType;
+import com.essri.mileage.event.domain.ReviewType;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

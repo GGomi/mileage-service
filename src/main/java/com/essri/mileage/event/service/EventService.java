@@ -2,9 +2,10 @@ package com.essri.mileage.event.service;
 
 import com.essri.mileage.event.EventRepository;
 import com.essri.mileage.event.dto.EventActionRequest;
-import com.essri.mileage.event.model.Events;
+import com.essri.mileage.event.domain.Events;
+import com.essri.mileage.event.exception.ContentNotFoundException;
 import com.essri.mileage.history.PointHistory;
-import com.essri.mileage.point.Points;
+import com.essri.mileage.point.domain.Points;
 import com.essri.mileage.point.service.IncreasePointService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -49,7 +50,6 @@ public class EventService {
 
     public void checkLegal(EventActionRequest dto) {
         if(dto.getAttachedPhotoIds().size() == 0 && dto.getContent().length() == 0)
-            throw new IllegalArgumentException(
-                    String.format("It's empty review content : %s", dto.getReviewId()));
+            throw new ContentNotFoundException(dto.getReviewId());
     }
 }

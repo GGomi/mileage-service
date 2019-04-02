@@ -1,8 +1,8 @@
 package com.essri.mileage.event.dto;
 
-import com.essri.mileage.event.model.ActionType;
-import com.essri.mileage.event.model.Events;
-import com.essri.mileage.event.model.ReviewType;
+import com.essri.mileage.event.domain.ActionType;
+import com.essri.mileage.event.domain.Events;
+import com.essri.mileage.event.domain.ReviewType;
 import lombok.Getter;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;

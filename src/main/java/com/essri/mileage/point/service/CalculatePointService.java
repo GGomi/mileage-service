@@ -1,8 +1,8 @@
 package com.essri.mileage.point.service;
 
 import com.essri.mileage.event.dto.EventActionRequest;
-import com.essri.mileage.event.model.ActionType;
-import com.essri.mileage.review.Review;
+import com.essri.mileage.event.domain.ActionType;
+import com.essri.mileage.review.domain.Review;
 import com.essri.mileage.review.ReviewRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,7 +23,6 @@ public class CalculatePointService {
                                                                                 .content(0)
                                                                                 .photos(0)
                                                                                 .build());
-
         if(dto.getAction().equals(ActionType.DELETE)) {
             return deleteAction(review);
         }

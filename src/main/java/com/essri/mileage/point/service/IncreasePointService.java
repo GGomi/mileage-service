@@ -1,7 +1,7 @@
 package com.essri.mileage.point.service;
 
 import com.essri.mileage.point.PointRepository;
-import com.essri.mileage.point.Points;
+import com.essri.mileage.point.domain.Points;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

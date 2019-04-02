@@ -1,11 +1,12 @@
 package com.essri.mileage.place.service;
 
 import com.essri.mileage.event.dto.EventActionRequest;
-import com.essri.mileage.event.model.ActionType;
+import com.essri.mileage.event.domain.ActionType;
 import com.essri.mileage.place.*;
-import com.essri.mileage.place.model.PlaceHistory;
-import com.essri.mileage.place.model.PlaceId;
-import com.essri.mileage.place.model.SpecialPlace;
+import com.essri.mileage.place.domain.PlaceHistory;
+import com.essri.mileage.place.domain.PlaceId;
+import com.essri.mileage.place.domain.SpecialPlace;
+import com.essri.mileage.place.exception.PlaceWriteFailException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,7 +26,9 @@ public class PlaceService {
 
     public long getPlaceMileage(EventActionRequest dto, SpecialPlace place) {
         if(isAvailableFirst(dto, place)) {
-            setSpecialValue(place, dto.getReviewId());
+            setSpecialValue(dto.getPlaceId(), dto.getReviewId());
+        } else {
+            return 0;
         }
 
         return dto.getAction().equals(ActionType.DELETE) ? -1 : 1;
@@ -39,6 +42,7 @@ public class PlaceService {
                     .build());
         }
     }
+
     public PlaceHistory isPlace(String placeId, String reviewId, String userId) {
         PlaceId placeIds = PlaceId.builder()
                 .placeId(placeId)
@@ -47,10 +51,9 @@ public class PlaceService {
 
         Optional<PlaceHistory> place = placeRepository.findById(placeIds);
 
-        if(place.isPresent())
-            throw new IllegalArgumentException(
-                    String.format("Already Write this place : %s", placeId)
-            );
+        if(place.isPresent()) {
+            throw new PlaceWriteFailException(placeId,userId);
+        }
 
         return PlaceHistory.builder()
                 .id(placeIds)
@@ -71,15 +74,11 @@ public class PlaceService {
         return specialPlaceRepository.findById(placeId).orElse(null);
     }
 
-    public void setSpecialValue(SpecialPlace place, String reviewId) {
-        if(place != null) {
-            if(place.getValue() == null) {
-                specialPlaceRepository.save(SpecialPlace.builder()
-                        .placeId(place.getPlaceId())
-                        .value(reviewId)
-                        .build());
-            }
-        }
+    public void setSpecialValue(String placeId, String reviewId) {
+        specialPlaceRepository.save(SpecialPlace.builder()
+                .placeId(placeId)
+                .value(reviewId)
+                .build());
     }
 
     public boolean isAvailableFirst(EventActionRequest dto, SpecialPlace place) {

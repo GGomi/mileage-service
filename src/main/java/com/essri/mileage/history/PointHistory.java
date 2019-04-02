@@ -1,7 +1,7 @@
 package com.essri.mileage.history;
 
-import com.essri.mileage.event.model.Events;
-import com.essri.mileage.point.Points;
+import com.essri.mileage.event.domain.Events;
+import com.essri.mileage.point.domain.Points;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,31 +19,31 @@ import java.time.LocalDateTime;
 @Getter
 public class PointHistory {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id")
-  private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
 
-  @CreationTimestamp
-  @Column(name = "created_at", updatable = false)
-  private LocalDateTime createdAt;
+    @CreationTimestamp
+    @Column(name = "created_at", updatable = false)
+    private LocalDateTime createdAt;
 
-  @UpdateTimestamp
-  @Column(name = "updated_at")
-  private LocalDateTime updateAt;
+    @UpdateTimestamp
+    @Column(name = "updated_at")
+    private LocalDateTime updateAt;
 
-  @ManyToOne
-  @JoinColumn(name = "events_id", nullable = false, updatable = false)
-  private Events events;
+    @ManyToOne
+    @JoinColumn(name = "events_id", nullable = false, updatable = false)
+    private Events events;
 
-  @ManyToOne
-  @JoinColumn(name = "points_id", nullable = false, updatable = false)
-  private Points points;
+    @ManyToOne
+    @JoinColumn(name = "points_id", nullable = false, updatable = false)
+    private Points points;
 
-  @Builder
-  public PointHistory(Events event, Points point) {
-    this.events = event;
-    this.points = point;
-  }
+    @Builder
+    public PointHistory(Events event, Points point) {
+        this.events = event;
+        this.points = point;
+    }
 
 }

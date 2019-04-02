@@ -1,4 +1,4 @@
-package com.essri.mileage.place.model;
+package com.essri.mileage.place.domain;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -7,22 +7,19 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
-@Table(name = "special_place")
+@Table(name = "place_history")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class SpecialPlace {
-    @Id
-    @Column(name = "id")
-    private String placeId;
+public class PlaceHistory {
 
-    @Column(name = "value")
+    @EmbeddedId
+    private PlaceId id;
+
+    @Column(name = "review_id")
     private String value;
 
     @CreationTimestamp
@@ -34,8 +31,9 @@ public class SpecialPlace {
     private LocalDateTime updateAt;
 
     @Builder
-    public SpecialPlace(String placeId, String value) {
-        this.placeId = placeId;
+    public PlaceHistory(PlaceId id, String value) {
+        this.id = id;
         this.value = value;
     }
+
 }

@@ -1,8 +1,8 @@
 package com.essri.mileage.event.service;
 
 import com.essri.mileage.event.dto.EventActionRequest;
-import com.essri.mileage.event.model.Events;
-import com.essri.mileage.place.model.SpecialPlace;
+import com.essri.mileage.event.domain.Events;
+import com.essri.mileage.place.domain.SpecialPlace;
 import com.essri.mileage.place.service.PlaceService;
 import com.essri.mileage.point.service.CalculatePointService;
 import com.essri.mileage.review.service.ReviewDeleteService;
@@ -25,22 +25,19 @@ public class EventDeleteService implements EventActionService {
     @Override
     public Events handleAction(EventActionRequest dto) {
 
-        if (reviewSaveService.hasReview(dto.getReviewId())) {
-            SpecialPlace place = placeService.isSpecial(dto.getPlaceId());
+        reviewSaveService.hasReview(dto.getReviewId());
 
-            long contentMileage = calculatePointService.contentCalculate(dto);
-            long placeMileage = placeService.getPlaceMileage(dto,place);
-            placeService.setSpecialPlace(place, dto.getReviewId());
+        SpecialPlace place = placeService.isSpecial(dto.getPlaceId());
 
-            Events event = eventService.writeEvent(dto, contentMileage + placeMileage);
+        long mileage = calculatePointService.contentCalculate(dto)
+                + placeService.getPlaceMileage(dto, place);
 
-            reviewDeleteService.delete(dto.getReviewId());
-            placeService.deletePlaceHistory(dto.getPlaceId(),dto.getUserId());
-            return event;
+        placeService.setSpecialPlace(place, dto.getReviewId());
 
-        } else {
-            throw new IllegalArgumentException(
-                    String.format("Unknown reviewId : %s", dto.getReviewId()));
-        }
+        Events event = eventService.writeEvent(dto, mileage);
+
+        reviewDeleteService.delete(dto.getReviewId());
+        placeService.deletePlaceHistory(dto.getPlaceId(), dto.getUserId());
+        return event;
     }
 }

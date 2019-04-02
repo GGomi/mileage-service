@@ -1,9 +1,9 @@
 package com.essri.mileage.event.service;
 
 import com.essri.mileage.event.dto.EventActionRequest;
-import com.essri.mileage.event.model.Events;
-import com.essri.mileage.place.model.PlaceHistory;
-import com.essri.mileage.place.model.SpecialPlace;
+import com.essri.mileage.event.domain.Events;
+import com.essri.mileage.place.domain.PlaceHistory;
+import com.essri.mileage.place.domain.SpecialPlace;
 import com.essri.mileage.place.service.PlaceService;
 import com.essri.mileage.point.service.CalculatePointService;
 import com.essri.mileage.review.service.ReviewSaveService;
@@ -26,8 +26,10 @@ public class EventAddService implements EventActionService {
         eventService.checkLegal(dto);
 
         SpecialPlace place = placeService.isSpecial(dto.getPlaceId());
-        long mileage = calculatePointService.contentCalculate(dto);
-        mileage += placeService.getPlaceMileage(dto,place);
+
+        long mileage = calculatePointService.contentCalculate(dto)
+                + placeService.getPlaceMileage(dto,place);
+
         PlaceHistory placeHistory = placeService.isPlace(dto.getPlaceId(), dto.getReviewId(), dto.getUserId());
 
         Events event = eventService.writeEvent(dto, mileage);

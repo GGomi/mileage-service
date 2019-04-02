@@ -1,4 +1,4 @@
-package com.essri.mileage.event.model;
+package com.essri.mileage.event.domain;
 
 public enum ActionType {
     ADD, DELETE, MOD

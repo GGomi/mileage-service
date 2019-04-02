@@ -1,8 +1,8 @@
 package com.essri.mileage.event.service;
 
 import com.essri.mileage.event.dto.EventActionRequest;
-import com.essri.mileage.event.model.Events;
-import com.essri.mileage.place.model.SpecialPlace;
+import com.essri.mileage.event.domain.Events;
+import com.essri.mileage.place.domain.SpecialPlace;
 import com.essri.mileage.place.service.PlaceService;
 import com.essri.mileage.point.service.CalculatePointService;
 import com.essri.mileage.review.service.ReviewSaveService;
@@ -24,18 +24,15 @@ public class EventModService implements EventActionService {
     public Events handleAction(EventActionRequest dto) {
         eventService.checkLegal(dto);
 
-        if (reviewSaveService.hasReview(dto.getReviewId())) {
-            SpecialPlace place = placeService.isSpecial(dto.getPlaceId());
+        reviewSaveService.hasReview(dto.getReviewId());
 
-            long mileage = calculatePointService.contentCalculate(dto);
-            mileage += placeService.getPlaceMileage(dto,place);
+        SpecialPlace place = placeService.isSpecial(dto.getPlaceId());
 
-            reviewSaveService.save(dto);
-            return eventService.writeEvent(dto, mileage);
+        long mileage = calculatePointService.contentCalculate(dto)
+                + placeService.getPlaceMileage(dto, place);
 
-        } else {
-            throw new IllegalArgumentException(
-                    String.format("Unknown reviewId : %s", dto.getReviewId()));
-        }
+        reviewSaveService.save(dto);
+        return eventService.writeEvent(dto, mileage);
+
     }
 }

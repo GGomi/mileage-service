@@ -1,8 +1,9 @@
 package com.essri.mileage.review.service;
 
 import com.essri.mileage.event.dto.EventActionRequest;
-import com.essri.mileage.review.Review;
+import com.essri.mileage.review.domain.Review;
 import com.essri.mileage.review.ReviewRepository;
+import com.essri.mileage.review.exception.ReviewNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,7 +22,7 @@ public class ReviewSaveService {
                 .build());
     }
 
-    public boolean hasReview(String reviewId) {
-        return reviewRepository.findById(reviewId).orElse(null) != null;
+    public Review hasReview(String reviewId) {
+        return reviewRepository.findById(reviewId).orElseThrow(() -> new ReviewNotFoundException(reviewId));
     }
 }

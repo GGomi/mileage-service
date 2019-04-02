@@ -22,5 +22,4 @@ public class EventApi {
         EventActionService eventActionService = eventFactoryService.getInstance(dto);
         return new EventActionResponse(eventActionService.handleAction(dto));
     }
-
 }

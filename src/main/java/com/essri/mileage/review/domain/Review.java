@@ -1,4 +1,4 @@
-package com.essri.mileage.review;
+package com.essri.mileage.review.domain;
 
 
 import lombok.AccessLevel;

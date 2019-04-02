@@ -1,4 +1,4 @@
-package com.essri.mileage.event.model;
+package com.essri.mileage.event.domain;
 
 
 import com.essri.mileage.history.PointHistory;

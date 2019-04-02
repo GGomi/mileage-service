@@ -2,7 +2,7 @@ package com.essri.mileage.point.dto;
 
 import com.essri.mileage.event.dto.EventActionResponse;
 import com.essri.mileage.history.PointHistory;
-import com.essri.mileage.point.Points;
+import com.essri.mileage.point.domain.Points;
 import lombok.Getter;
 
 import java.util.ArrayList;
