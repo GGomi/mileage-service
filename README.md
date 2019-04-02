@@ -128,6 +128,7 @@ END
 - `special_place` : 첫리뷰 조건을 구현하기위해 특정 place를 미리 지정해놓은 테이블
 - `point_history` : `points`와 `events`를 다대일 관계로 연관되어있음.
 - `place_history` : `place_id`와 `place_user`를 복합키로 가지고 있으며, 유저가 해당 장소에 리뷰를 작성했는지 판단하기위한 테이블
+
 ![table](doc/table.png)
 
 # 4. API 정보
