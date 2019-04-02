@@ -1,7 +1,6 @@
 package com.essri.mileage.point.dto;
 
 import com.essri.mileage.event.dto.EventActionResponse;
-import com.essri.mileage.event.model.Event;
 import com.essri.mileage.history.PointHistory;
 import com.essri.mileage.point.Points;
 import lombok.Getter;
@@ -22,14 +21,11 @@ public class GetPointResponse {
         this.histories = buildHistory(point.getHistories());
     }
 
-    public List<EventActionResponse> buildHistory(List<PointHistory> histories) {
+    private List<EventActionResponse> buildHistory(List<PointHistory> histories) {
 
         List<EventActionResponse> returns = new ArrayList<>();
 
-        for (PointHistory pointHistory : histories) {
-            Event event = pointHistory.getEvents();
-            returns.add(new EventActionResponse(event));
-        }
+        histories.forEach(obj -> returns.add(new EventActionResponse(obj.getEvents())));
 
         return returns;
     }
