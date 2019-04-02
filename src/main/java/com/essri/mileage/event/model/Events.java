@@ -15,7 +15,7 @@ import java.util.List;
 @Table(name = "events")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class Event {
+public class Events {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -59,7 +59,7 @@ public class Event {
     private List<PointHistory> histories = new ArrayList<>();
 
     @Builder
-    public Event(String userId, String reviewId, String content, ActionType action, ReviewType type, long point, String photos, String placeId) {
+    public Events(String userId, String reviewId, String content, ActionType action, ReviewType type, long point, String photos, String placeId) {
         this.userId = userId;
         this.reviewId = reviewId;
         this.content = content;

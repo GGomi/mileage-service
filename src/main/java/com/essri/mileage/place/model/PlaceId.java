@@ -1,4 +1,4 @@
-package com.essri.mileage.place;
+package com.essri.mileage.place.model;
 
 import lombok.Builder;
 import lombok.Getter;

@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class IncreasePoint {
+public class IncreasePointService {
     private final PointRepository repository;
 
     public Points save(String userId, long mileage) {

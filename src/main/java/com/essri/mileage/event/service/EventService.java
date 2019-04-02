@@ -2,14 +2,10 @@ package com.essri.mileage.event.service;
 
 import com.essri.mileage.event.EventRepository;
 import com.essri.mileage.event.dto.EventActionRequest;
-import com.essri.mileage.event.model.Event;
+import com.essri.mileage.event.model.Events;
 import com.essri.mileage.history.PointHistory;
-import com.essri.mileage.place.SpecialPlace;
-import com.essri.mileage.place.service.PlaceService;
 import com.essri.mileage.point.Points;
-import com.essri.mileage.point.service.CalculatePoint;
-import com.essri.mileage.point.service.IncreasePoint;
-import com.essri.mileage.review.service.ReviewSave;
+import com.essri.mileage.point.service.IncreasePointService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,13 +14,13 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @RequiredArgsConstructor
 public class EventService {
-    private final IncreasePoint increasePoint;
+    private final IncreasePointService increasePointService;
     private final EventRepository eventRepository;
 
-    public Event writeEvent(EventActionRequest dto, long mileage) {
+    public Events writeEvent(EventActionRequest dto, long mileage) {
 
-        Event event = eventBuilder(dto, mileage);
-        Points point = increasePoint.save(dto.getUserId(), mileage);
+        Events event = eventBuilder(dto, mileage);
+        Points point = increasePointService.save(dto.getUserId(), mileage);
 
         PointHistory pointHistory = PointHistory.builder()
                 .event(event)
@@ -38,8 +34,8 @@ public class EventService {
 
     }
 
-    private Event eventBuilder(EventActionRequest dto, long mileage) {
-        return Event.builder()
+    private Events eventBuilder(EventActionRequest dto, long mileage) {
+        return Events.builder()
                 .userId(dto.getUserId())
                 .reviewId(dto.getReviewId())
                 .action(dto.getAction())

@@ -1,7 +1,7 @@
 package com.essri.mileage.event.dto;
 
 import com.essri.mileage.event.model.ActionType;
-import com.essri.mileage.event.model.Event;
+import com.essri.mileage.event.model.Events;
 import com.essri.mileage.event.model.ReviewType;
 import lombok.Getter;
 import javax.validation.constraints.NotBlank;
@@ -33,7 +33,7 @@ public class EventActionResponse {
     @NotBlank
     private long point;
 
-    public EventActionResponse(Event event) {
+    public EventActionResponse(Events event) {
         this.id = event.getId();
         this.reviewId = event.getReviewId();
         this.type = event.getType();

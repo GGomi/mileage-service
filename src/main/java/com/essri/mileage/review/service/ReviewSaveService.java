@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class ReviewSave {
+public class ReviewSaveService {
     private final ReviewRepository reviewRepository;
 
     public Review save(EventActionRequest dto) {
@@ -22,10 +22,6 @@ public class ReviewSave {
     }
 
     public boolean hasReview(String reviewId) {
-        if (reviewRepository.findById(reviewId).orElse(null) != null) {
-            return true;
-        } else {
-            return false;
-        }
+        return reviewRepository.findById(reviewId).orElse(null) != null;
     }
 }

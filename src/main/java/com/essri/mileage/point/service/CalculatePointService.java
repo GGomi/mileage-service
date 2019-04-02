@@ -13,17 +13,16 @@ import java.util.List;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class CalculatePoint {
+public class CalculatePointService {
     private final ReviewRepository reviewRepository;
 
     public long contentCalculate(EventActionRequest dto) {
         long mileage;
 
-        Review review = reviewRepository.findById(dto.getReviewId())
-                                        .orElse(Review.builder()
-                                                        .content(0)
-                                                        .photos(0)
-                                                        .build());
+        Review review = reviewRepository.findById(dto.getReviewId()).orElse(Review.builder()
+                                                                                .content(0)
+                                                                                .photos(0)
+                                                                                .build());
 
         if(dto.getAction().equals(ActionType.DELETE)) {
             return deleteAction(review);

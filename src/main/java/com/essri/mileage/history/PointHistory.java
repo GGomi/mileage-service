@@ -1,6 +1,6 @@
 package com.essri.mileage.history;
 
-import com.essri.mileage.event.model.Event;
+import com.essri.mileage.event.model.Events;
 import com.essri.mileage.point.Points;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -34,14 +34,14 @@ public class PointHistory {
 
   @ManyToOne
   @JoinColumn(name = "events_id", nullable = false, updatable = false)
-  private Event events;
+  private Events events;
 
   @ManyToOne
   @JoinColumn(name = "points_id", nullable = false, updatable = false)
   private Points points;
 
   @Builder
-  public PointHistory(Event event, Points point) {
+  public PointHistory(Events event, Points point) {
     this.events = event;
     this.points = point;
   }

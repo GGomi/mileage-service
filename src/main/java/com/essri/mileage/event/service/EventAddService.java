@@ -1,12 +1,12 @@
 package com.essri.mileage.event.service;
 
 import com.essri.mileage.event.dto.EventActionRequest;
-import com.essri.mileage.event.model.Event;
-import com.essri.mileage.place.PlaceHistory;
-import com.essri.mileage.place.SpecialPlace;
+import com.essri.mileage.event.model.Events;
+import com.essri.mileage.place.model.PlaceHistory;
+import com.essri.mileage.place.model.SpecialPlace;
 import com.essri.mileage.place.service.PlaceService;
-import com.essri.mileage.point.service.CalculatePoint;
-import com.essri.mileage.review.service.ReviewSave;
+import com.essri.mileage.point.service.CalculatePointService;
+import com.essri.mileage.review.service.ReviewSaveService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,20 +18,20 @@ import org.springframework.transaction.annotation.Transactional;
 public class EventAddService implements EventActionService {
     private final EventService eventService;
     private final PlaceService placeService;
-    private final ReviewSave reviewSave;
-    private final CalculatePoint calculatePoint;
+    private final ReviewSaveService reviewSaveService;
+    private final CalculatePointService calculatePointService;
 
     @Override
-    public Event handleAction(EventActionRequest dto) {
+    public Events handleAction(EventActionRequest dto) {
         eventService.checkLegal(dto);
 
         SpecialPlace place = placeService.isSpecial(dto.getPlaceId());
-        long mileage = calculatePoint.contentCalculate(dto);
+        long mileage = calculatePointService.contentCalculate(dto);
         mileage += placeService.getPlaceMileage(dto,place);
         PlaceHistory placeHistory = placeService.isPlace(dto.getPlaceId(), dto.getReviewId(), dto.getUserId());
 
-        Event event = eventService.writeEvent(dto, mileage);
-        reviewSave.save(dto);
+        Events event = eventService.writeEvent(dto, mileage);
+        reviewSaveService.save(dto);
         placeService.savePlaceHistory(placeHistory);
 
         return event;
