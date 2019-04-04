@@ -1,4 +1,5 @@
 # 클럽 마일리지 서비스
+![build](https://travis-ci.org/GGomi/mileage-service.svg?branch=master)
 
 # 목차
 - [0. 요구사항](#0.-요구사항)
