@@ -38,3 +38,17 @@ logging:
     org:
       hibernate:
         type: trace
+---
+spring:
+  profiles: test
+  datasource:
+    platform: h2
+    url: jdbc:h2:~/test
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    show-sql: false
+    hibernate:
+      ddl-auto: create-drop
