@@ -15,8 +15,5 @@ cache:
 
 script: "./gradlew clean build"
 
-services:
-  - memcached
-
 after_success:
   - ./gradlew jacocoTestReport coveralls

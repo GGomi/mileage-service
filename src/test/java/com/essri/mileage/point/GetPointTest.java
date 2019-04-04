@@ -2,6 +2,7 @@ package com.essri.mileage.point;
 
 import com.essri.mileage.point.domain.Points;
 import com.essri.mileage.point.service.GetUserPointService;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,10 @@ public class GetPointTest {
     @Autowired
     private PointRepository pointRepository;
 
-
+    @Before
+    public void setUp() {
+        pointRepository.deleteAll();
+    }
 
     @Test
     public void 유저포인트가져오기() {
