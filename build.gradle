@@ -28,4 +28,13 @@ dependencies {
 //    runtimeOnly 'mysql:mysql-connector-java'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    apply plugin: 'com.github.kt3k.coveralls'
+    apply plugin: 'jacoco'
+
+    jacocoTestReport {
+        reports {
+            xml.enabled = true // coveralls plugin depends on xml format report
+            html.enabled = true
+        }
+    }
 }
